@@ -1,4 +1,5 @@
 from machine import Pin, SPI, Timer
+import _thread
 from time import sleep
 from lib.ssd1351 import Display, color565
 
@@ -47,6 +48,11 @@ def interruption_second_handler(pin):
             isSecondButtonPressed = True
             sceneManager.secondButtonHasBeenPressed()
 
+def draw_thread(scene_manager):
+    while True:
+        sceneManager.draw()
+        sleep(0.05)
+
 def main():    
     # Setup buttons
     main_button = Pin(pin_main_button, mode=Pin.IN, pull=Pin.PULL_UP)
@@ -63,11 +69,11 @@ def main():
     # Create the led ring
     ledRing = LedRingManager()
     
+    _thread.start_new_thread(draw_thread, (sceneManager,))
     while True:
         sceneManager.update()
-        sceneManager.draw()
         ledRing.blinkNexLed()
-        sleep(0.05)
+        sleep(0.01)
 
 if __name__ == '__main__':
     main()
