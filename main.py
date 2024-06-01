@@ -3,6 +3,7 @@ from time import sleep
 from lib.ssd1351 import Display, color565
 
 from src.sceneManager import SceneManager
+from src.ledRing import LedRingManager
 
 # GPIO numbers of every input
 pin_DIN = 19
@@ -59,9 +60,13 @@ def main():
     display = Display(spi, dc=Pin(pin_DC), cs=Pin(pin_CS), rst=Pin(pin_RST))
     sceneManager.setDisplay(display)
     
+    # Create the led ring
+    ledRing = LedRingManager()
+    
     while True:
         sceneManager.update()
         sceneManager.draw()
+        ledRing.blinkNexLed()
         sleep(0.05)
 
 if __name__ == '__main__':
