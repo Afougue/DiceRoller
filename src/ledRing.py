@@ -24,14 +24,14 @@ class LedRingManager:
         hue = ledIndex / self.numberOfLed
         return self.hsv_to_rgb(hue, 1, 0.05)  # 'value' of hsv is the brightness
         
-    def blinkNexLed(self) -> None:
+    def blinkNexLed(self, numberOfLedToTurnOn = 1) -> None:
         ledRgbColor = self.getRgbValueForLed(self.currentLedOn)
         self.currentLedOn += 1
         if self.currentLedOn == self.numberOfLed:
             self.currentLedOn = 0
         
         self.ledRing[self.currentLedOn - 1] = (0, 0, 0)
-        self.ledRing[self.currentLedOn] = ledRgbColor
+        self.ledRing[(self.currentLedOn + numberOfLedToTurnOn - 1) % self.numberOfLed] = ledRgbColor	# -1 as we don't want any offset to turn on one led
             
         self.ledRing.write()
         

@@ -72,7 +72,7 @@ def main():
     _thread.start_new_thread(draw_thread, (sceneManager,))
     while True:
         sceneManager.update()
-        ledRing.blinkNexLed()
+        ledRing.blinkNexLed(5)
         sleep(0.01)
 
 if __name__ == '__main__':
